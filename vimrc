@@ -53,6 +53,12 @@ set clipboard=unnamed                       " use system clipboard
 set exrc                                    " enable usage of additional .vimrc files from working directory
 set secure                                  " prohibit .vimrc files to execute shell, create files, etc...
 
+set wrap                                    " enable text wrap
+set textwidth=79                            " set textwidth to 79 as per pep8 rules
+set formatoptions+=a                        " reformat text automatically
+set colorcolumn=79                          " add a visual margin
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
 "=====================================================
 "" Tabs / Buffers settings
 "=====================================================
