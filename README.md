@@ -1,2 +1,2 @@
 # VimSetup
-Sets up vim for Python2.7 with necessary plugins.
+Sets up vim for Python2/3 with necessary plugins.

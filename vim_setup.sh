@@ -1,6 +1,9 @@
 #!/bin/bash
 
-install_vim()
+ENABLE_PYTHON3=1
+LATEST_RELEASE=0
+
+install_vim_py2()
 {
     #Build and install Vim with python2.7 enabled
   
@@ -16,7 +19,7 @@ install_vim()
     cd /tmp
     sudo rm -rf vim
     git clone https://github.com/vim/vim.git
-    if [ "$1" == "-lr" ]; then
+    if [ $LATEST_RELEASE == 1 ]; then
         git checkout `git describe --tags`
     fi
     cd vim
@@ -49,12 +52,51 @@ setup_vim()
     vim +PluginInstall +qall
 }
 
+usage()
+{
+    echo -e "Syntax: ./vim_setup.sh [-py2] [-lr]\n"
+    echo -e "Description:"
+    echo -e     "\tInstall vim and setup the vim enviroment for python2/3\n"
+    echo -e "Options:"
+    echo -e     "\t -py2,--enable-python2: 	enable python2.7"
+    echo -e     "\t -lr,--latest-release:  	Install latest release vim"
+}
+
+
+parse_cmd_line_args()
+{
+    while [ "$1" != "" ]; do
+        case $1 in
+            -py2 | --enable-python2 )
+                shift
+                ENABLE_PYTHON3=0
+                ;;
+            -lr | --latest-release )
+                shift
+                LATEST_RELEASE=1
+                ;;
+            -h | --help )
+                usage
+                exit
+                ;;
+            * )
+                usage
+                exit 1
+        esac
+        shift
+    done
+}
+
 main()
 {
-
+    parse_cmd_line_args "$@"
     set -x
     set -e
-    install_vim "$@"
+    if [ $ENABLE_PYTHON3 == 0 ]; then
+        install_vim_py2
+    else
+        sudo apt install vim-nox
+    fi
     setup_vim
     set +x
     set +e
